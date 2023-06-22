@@ -21,6 +21,8 @@ import HomeHeader from './../components/HomeHeader';
 // import { contains } from '@firebase/util';
 import  {filter}  from 'lodash/filter';
 // import { getDocuments } from '../adpater';
+import * as IntentLauncher from 'expo-intent-launcher';
+
 
 const {width} = Dimensions.get('screen');
 const cardWidth = width / 2 - 20;
@@ -28,63 +30,60 @@ const cardWidth = width / 2 - 20;
 
 import { PermissionsAndroid } from 'react-native';
 
-async function requestCallPermission() {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CALL_PHONE,
-      {
-        title: 'Phone Call Permission',
-        message: 'This app needs access to make phone calls',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can make phone calls');
-    } else {
-      console.log('Phone call permission denied');
-    }
-    return granted;
-  } catch (err) {
-    console.warn(err);
-  }
-}
+// async function requestCallPermission() {
+//   try {
+//     const granted = await PermissionsAndroid.request(
+//       PermissionsAndroid.PERMISSIONS.CALL_PHONE,
+//       {
+//         title: 'Phone Call Permission',
+//         message: 'This app needs access to make phone calls',
+//         buttonNeutral: 'Ask Me Later',
+//         buttonNegative: 'Cancel',
+//         buttonPositive: 'OK',
+//       },
+//     );
+//     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//       console.log('You can make phone calls');
+//     } else {
+//       console.log('Phone call permission denied');
+//     }
+//     return granted;
+//   } catch (err) {
+//     console.warn(err);
+//   }
+// }
 
 const LandingScreen = ({navigation}) => {
   const [disabled, setDisabled] = useState(false);
-  const phoneNumber = '+2348173330147';
+  // const phoneNumber = '+2348173330147';
 
-  async function makePhoneCall() {
-    const granted = await requestCallPermission();
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      Linking.openURL(`tel:${phoneNumber}`);
-    } else {
-      setDisabled(true);
-    }
-  }
-
-  // const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
-  // const [products, setProducts] = React.useState([]);
-  
-
-  // React.useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const docSnap = await getDocuments("products");
-
-  //       if(docSnap?.empty?.()) {
-  //         return;
-  //       }
-
-  //       setProducts(docSnap?.docs)
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
+  // async function makePhoneCall() {
+  //   const granted = await requestCallPermission();
+  //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //     Linking.openURL(`tel:${phoneNumber}`);
+  //   } else {
+  //     setDisabled(true);
   //   }
+  // }
+  const makePhoneCall = () => {
+    const phoneNumber = '+2348173330147'; // Replace with the desired phone number
 
-  //   fetchProducts();
-  // }, [])
+    // Check if the device supports making phone calls
+    Linking.canOpenURL(`tel:${phoneNumber}`)
+      .then((supported) => {
+        if (supported) {
+          // Launch the dialer with the specified phone number
+          IntentLauncher.startActivityAsync(IntentLauncher.ACTION_DIAL, {
+            data: `tel:${phoneNumber}`,
+          });
+        } else {
+          console.log('Phone call not supported on this device.');
+        }
+      })
+      .catch((error) => console.error('Error checking phone call support:', error));
+  };
+
+
   const [searchText, setSearchText] = useState('');
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -217,24 +216,7 @@ const LandingScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <HomeHeader navigation={navigation} />
-      {/* <View style={style.header}>
-        <View>
-          <View style={{flexDirection: 'row', flex:1, width:100,}}>
-            <Text style={{fontSize: 22}}>Hello,</Text>
-            <Text style={{fontSize: 22, fontWeight: 'bold', marginLeft: 10}}>
-             Mr Max
-            </Text>
-             <Text style={{position:'relative', top:50,right:0, left:-120, fontSize: 14, color: COLORS.grey, width:400, flexDirection:'row', marginTop:-10,}}>
-            What product would you like... Make your choice 
-          </Text>
-          </View>
-         
-        </View>
-        <Image
-          source={require('../../assets/images/study2.png')}
-          style={{height: 50, width: 50, borderRadius: 25, marginVertical:15, paddingLeft:10}}
-        />
-      </View> */}
+    
       <View
         style={{
           marginTop: 20,
@@ -268,9 +250,6 @@ const LandingScreen = ({navigation}) => {
          {/* </View> */}
       <View style={style.floatButton}>
         <TouchableOpacity
-          // onPress={() => {
-          //   navigation.navigate('PhoneCallButton');
-          // }} 
           onPress={makePhoneCall} disabled={disabled}
            style={{ justifyContent:'center', alignContent:'center', alignSelf:'center', alignItems:'center', padding:2, margin:10}}
           >

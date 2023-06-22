@@ -254,7 +254,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import {
   setDoc,
@@ -273,6 +274,7 @@ export const SignInContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [error, setError] = useState(null);
   const [signedIn, dispatchSignedIn] = useReducer(SignInReducer, { userToken: null });
+  const [resetEmail, setResetEmail] = useState('');
 
   const logIn = async (email, password) => {
     try {
@@ -297,6 +299,19 @@ export const SignInContextProvider = ({ children }) => {
       });
   };
 
+
+  const resetPassword = async () => {
+    setError(null);
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      Alert.alert('Password Reset', 'A password reset email has been sent to your email address.');
+    } catch (error) {
+      console.log('Password reset error:', error);
+      setError('Failed to reset password. Please check your email and try again.');
+    }
+  };
+
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -306,6 +321,7 @@ export const SignInContextProvider = ({ children }) => {
           email: user.email,
           displayName: user.displayName,
           phoneNumber: user.phoneNumber,
+          Address: user.address,
         });
         dispatchSignedIn({ type: 'UPDATE_SIGN_IN', payload: { userToken: user.uid } });
       } else {
@@ -335,6 +351,7 @@ export const SignInContextProvider = ({ children }) => {
         email: user.email,
         displayName: user.displayName,
         phoneNumber: user.phoneNumber,
+        Address: user.address,
       });
     } catch (error) {
       console.log('Sign in error:', error);
@@ -358,6 +375,7 @@ export const SignInContextProvider = ({ children }) => {
         name,
         email,
         phone,
+        address,
       };
 
       await saveUserDetail(userId, userDetails);
@@ -373,6 +391,7 @@ export const SignInContextProvider = ({ children }) => {
         email: user.email,
         displayName: user.displayName || name,
         phoneNumber: user.phoneNumber,
+        Address: user.address,
       });
     } catch (error) {
       console.log('Sign up error:', error);
@@ -485,6 +504,7 @@ export const SignInContextProvider = ({ children }) => {
         signUp,
         saveQuizDetailsToFirestore,
         handleSignOut,
+        resetPassword,
       }}
     >
       {children}

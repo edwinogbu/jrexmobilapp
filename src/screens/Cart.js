@@ -11,8 +11,6 @@ import { SignInContext } from '../contexts/authContext';
 // import {  auth, db, firestore, addDoc, collection } from './../components/config';
 import {  auth, db, firestore, addDoc, collection, doc, docs, getDocs  } from './../../firebase';
 
-// import {auth, db, collection, addDoc, setDoc } from '../../firebase/index';
-
 
 export function Cart({ navigation }) {
   const {  items, removeItemFromCart, getItemsCount, getTotalPrice, incrementItemQty, decrementItemQty, emptyCart, getSubTotal,
@@ -250,7 +248,11 @@ const styles = StyleSheet.create({
   paddingHorizontal: 20, // set horizontal padding
   paddingVertical: 10, // set vertical padding
 
-}
+},
+timerContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
 
 });
 

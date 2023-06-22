@@ -7,7 +7,7 @@ import COLORS from './../global/LandingColors';
 import { SignInContext } from './../contexts/authContext';
 
 const DrawerContent = (props) => {
-  const { signedIn, dispatchSignedIn, createUser, signIn, logout, user, setUser } = useContext(SignInContext);
+  const { signedIn, dispatchSignedIn, createUser, signIn, logout, user,handleSignOut, setUser } = useContext(SignInContext);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [userData, setUserData] = useState({});
   
@@ -61,9 +61,6 @@ const [isAdmin, setIsAdmin] = useState(false);
     setIsDarkMode(!isDarkMode);
   };
 
-  const handleSignOut = () => {
-    logout();
-  };
 
   const renderUserInfo = () => {
     return (
@@ -75,7 +72,7 @@ const [isAdmin, setIsAdmin] = useState(false);
           source={require('./../../assets/images/logo.png')}
         />
         <View style={styles.userInfoContainer}>
-          <Text style={styles.userName}>Mr {user && (userData.name || user.displayName || auth.currentUser?.name)}</Text>
+        <Text style={styles.userName}>Mr {user && (userData.name || user.displayName)}</Text>
           <Text style={styles.userEmail}>{user && user.email}</Text>
         </View>
       </View>
@@ -176,7 +173,7 @@ const [isAdmin, setIsAdmin] = useState(false);
         <DrawerItem
           icon={({ color, size }) => <MaterialCommunityIcons name="logout" color={color} size={size} />}
           label="Sign Out"
-          onPress={handleSignOut}
+          onPress={handleSignOut} // Corrected function name
           labelStyle={styles.drawerItemLabel}
           iconStyle={styles.signOutIcon}
           style={styles.signOutContainer}

@@ -35,6 +35,7 @@ const SignInWelcomeScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -67,6 +68,13 @@ const SignInWelcomeScreen = ({ navigation }) => {
       setNameError('Name is required');
     } else {
       setNameError('');
+    }
+  };
+  const validateAddress = () => {
+    if (name.trim() === '') {
+      setAddressError('Address is required');
+    } else {
+      setAddressError('');
     }
   };
   
@@ -104,22 +112,25 @@ const SignInWelcomeScreen = ({ navigation }) => {
     validateName();
     validateEmail();
     validatePhone();
+    validateAddress();
     validatePassword();
 
     if (nameError === '' && emailError === '' && phoneError === '' && passwordError === '') {
       try {
-        const user = await signUp(name, email, phone, password);
+        const user = await signUp(name, email, phone, address, password);
         console.log(user);
         // User successfully signed up, setUser to update the user state in context
         setUser({
           name,
           email,
           phone,
-          password
+          address,
+          password,
         });
         setName('');
         setEmail('');
         setPhone('');
+        setAddress('');
         setPassword('');
         setSignUpModalVisible(false);
       } catch (error) {
@@ -146,109 +157,47 @@ const month = String(currentDate.getMonth() + 1).padStart(2, '0');
 const day = String(currentDate.getDate()).padStart(2, '0');
 
 const formattedDate = `${year}-${month}-${day}`;
-// console.log(formattedDate);
-
-// async function signUp(values) {
-//   try {
-//     const { firstName, lastName, phoneNumber, email, password } = values;
-
-//     // Create user account with Firebase Authentication
-//     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
-//     // User created successfully
-//     const user = userCredential.user;
-//     console.log("User signed up successfully!");
-
-//     // Save user data to Cloud Firestore
-//     const usersCollectionRef = collection(db, "users");
-
-//     const userData = {
-//       firstName: firstName,
-//       lastName: lastName,
-//       phoneNumber: phoneNumber,
-//       email: email,
-//     };
-
-//     await addDoc(usersCollectionRef, userData);
-//     console.log("User data saved successfully");
-
-//     // Save user data to device storage
-//     const userDataString = JSON.stringify(userData);
-//     await AsyncStorage.setItem('userData', userDataString);
-//     console.log("User data saved to device storage");
-
-//     // Dispatch the signed-in user token
-//     if (user && user.uid) {
-//       dispatchSignedIn({ type: 'UPDATE_SIGN_IN', userToken: user.uid });
-//     } else {
-//       console.log("Unable to dispatch the signed-in user token.");
-//     }
-
-//     return userCredential;
-//   } catch (error) {
-//     switch (error.code) {
-//       case "auth/email-already-in-use":
-//         console.log("The email address is already in use.");
-//         break;
-//       case "auth/invalid-email":
-//         console.log("The email address is not valid.");
-//         break;
-//       case "auth/weak-password":
-//         console.log("The password is too weak.");
-//         break;
-//       default:
-//         console.error(error);
-//     }
-//     throw error;
-//   }
-// }
-
-
-// async function signIn(data) {
-//   const { email, password } = data;
-//   try {
-//     const userCredential = await logIn(email, password);
-//     const user = userCredential.user;
-//     console.log(user);
-//     dispatchSignedIn({ type: "UPDATE_SIGN_IN", payload: { userToken: user.user.uid } });
-//     console.log('User signed in successfully!');
-//     alert('User signed in successfully!');
-//     return user;
-//   } catch (error) {
-//     const errorMessages = {
-//       'auth/wrong-password': 'Incorrect password. Please try again.',
-//       'auth/user-not-found': 'No user found with the provided email address.',
-//       'auth/invalid-email': 'The email address is not valid.',
-//       default: 'An error occurred. Please try again later.',
-//     };
-//     const message = errorMessages[error.code] || errorMessages.default;
-//     console.error(error);
-//     alert(message);
-//     throw error;
-//   }
-// }
-
-
-
 
   return (
     <SafeAreaView style={styles.container}>
+
 <Header
   containerStyle={{ backgroundColor: '#2B60DA' }}
-  centerComponent={{ text: ` ${'CALL:08023456776'}`, style: { color: '#fff', fontSize: 18, fontWeight: 'bold' } }}
+  rightComponent={{
+    text: ' jrex@gmail.com',
+    style: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
+  }}
   leftComponent={
-    <TouchableOpacity onPress={() => navigation.goBack()} style={{ fontWeight: 'bold', fontSize: 22 }}>
-      <Ionicons name="ios-arrow-back" size={14} color="#fff" />
-      <Text style={{ color: '#fff', marginLeft: 21, fontSize: 15, fontWeight: 'bold' }}>Back</Text>
+    <TouchableOpacity onPress={() => setSignInModalVisible(true)} style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Ionicons name="person" size={24} color="#fff" />
+      <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold', marginLeft: 5 }}>Login</Text>
     </TouchableOpacity>
   }
-  rightComponent={
+  centerComponent={
     <View style={styles.timerContainer}>
-      <Entypo name="mail" size={20} color="#fff" />
-      <Text style={{ ...styles.timerText, color: '#FFF', fontWeight: 'bold', fontSize: 14 }}>{` jrex@gmail.com`}</Text>
+    
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={{ ...styles.timerText, color: '#FFF', fontWeight: 'bold', fontSize: 14, marginRight: 5 }}>
+          0907878890
+        </Text>
+        <Entypo name="phone" size={20} color="#fff" />
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={{ ...styles.timerText, color: '#FFF', fontWeight: 'bold', fontSize: 14, marginRight: 5 }}>
+          08023456776
+        </Text>
+        <Entypo name="phone" size={20} color="#fff" />
+      </View>
     </View>
   }
 />
+
+
+
+
+
+
+
 
              <Image source={require('./../../../assets/images/logo.png')} style={styles.logo} />
 
@@ -349,6 +298,15 @@ const formattedDate = `${year}-${month}-${day}`;
               onBlur={validatePhone}
             />
             {phoneError !== '' && <Text style={styles.errorText}>{phoneError}</Text>}
+            
+            <TextInput
+              style={styles.input}
+              placeholder="Address"
+              value={address}
+              onChangeText={setAddress}
+              onBlur={validateAddress}
+            />
+            {nameError !== '' && <Text style={styles.errorText}>{nameError}</Text>}
             <TextInput
               style={styles.input}
               placeholder="Password"

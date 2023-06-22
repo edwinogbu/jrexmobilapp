@@ -40,6 +40,7 @@ import { db } from './../../firebase'; // Assuming you have already imported and
 import SalesReportScreen from './../screens/SalesReportScreen';
 import SalesReportDetailScreen from './../SalesReportDetailScreen';
 import UserListScreen from './../screens/UserListScreen';
+import ConfirmationScreen from './../screens/ConfirmationScreen';
 
 
 
@@ -801,6 +802,8 @@ export default function AppStack() {
                ),
             })} 
          />
+  
+        <Stack.Screen name="Confirmation" component={ConfirmationScreen} />
          {/* <Stack.Screen 
             name="SalesReportScreen" 
             component={SalesReportScreen} 

@@ -159,6 +159,9 @@ export default function CustomerReceiptScreen({ route, navigation }) {
         <TouchableOpacity onPress={handleShare}>
           <Text style={styles.shareButtonText}>Share Receipt</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate("Home")}>
+          <Text style={{...styles.shareButtonText, margin:20,}}>Finished</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
