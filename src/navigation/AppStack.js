@@ -712,7 +712,7 @@ export default function AppStack() {
                   ),
                })} 
          />
-            <Stack.Screen 
+            {/* <Stack.Screen 
                name="PaymentScreen" 
                component={PaymentScreen} 
                options={({ navigation }) => ({
@@ -729,7 +729,7 @@ export default function AppStack() {
 
                   ),
                })} 
-         />
+         /> */}
             <Stack.Screen 
                name="SettingsScreen" 
                component={SettingsScreen} 

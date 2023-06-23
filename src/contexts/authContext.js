@@ -375,7 +375,6 @@ export const SignInContextProvider = ({ children }) => {
         name,
         email,
         phone,
-        address,
       };
 
       await saveUserDetail(userId, userDetails);

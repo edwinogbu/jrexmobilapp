@@ -32,10 +32,12 @@ const SignInWelcomeScreen = ({ navigation }) => {
 
   const [signUpModalVisible, setSignUpModalVisible] = useState(false);
   const [signInModalVisible, setSignInModalVisible] = useState(false);
+  const [emailModalVisible, setEmailModalVisible] = useState(false);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  // const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -70,13 +72,13 @@ const SignInWelcomeScreen = ({ navigation }) => {
       setNameError('');
     }
   };
-  const validateAddress = () => {
-    if (name.trim() === '') {
-      setAddressError('Address is required');
-    } else {
-      setAddressError('');
-    }
-  };
+  // const validateAddress = () => {
+  //   if (name.trim() === '') {
+  //     setAddressError('Address is required');
+  //   } else {
+  //     setAddressError('');
+  //   }
+  // };
   
   const validateEmail = () => {
     if (email.trim() === '') {
@@ -112,25 +114,25 @@ const SignInWelcomeScreen = ({ navigation }) => {
     validateName();
     validateEmail();
     validatePhone();
-    validateAddress();
+    // validateAddress();
     validatePassword();
 
     if (nameError === '' && emailError === '' && phoneError === '' && passwordError === '') {
       try {
-        const user = await signUp(name, email, phone, address, password);
+        const user = await signUp(name, email, phone, password);
         console.log(user);
         // User successfully signed up, setUser to update the user state in context
         setUser({
           name,
           email,
           phone,
-          address,
+          // address,
           password,
         });
         setName('');
         setEmail('');
         setPhone('');
-        setAddress('');
+        // setAddress('');
         setPassword('');
         setSignUpModalVisible(false);
       } catch (error) {
@@ -158,15 +160,18 @@ const day = String(currentDate.getDate()).padStart(2, '0');
 
 const formattedDate = `${year}-${month}-${day}`;
 
+
   return (
     <SafeAreaView style={styles.container}>
 
 <Header
   containerStyle={{ backgroundColor: '#2B60DA' }}
-  rightComponent={{
-    text: ' jrex@gmail.com',
-    style: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
-  }}
+  rightComponent={
+    <TouchableOpacity onPress={() => setEmailModalVisible(true)} style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Ionicons name="mail" size={24} color="#fff" />
+      <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold', marginLeft: 5 }}>Email</Text>
+    </TouchableOpacity>
+  }
   leftComponent={
     <TouchableOpacity onPress={() => setSignInModalVisible(true)} style={{ flexDirection: 'row', alignItems: 'center' }}>
       <Ionicons name="person" size={24} color="#fff" />
@@ -299,14 +304,14 @@ const formattedDate = `${year}-${month}-${day}`;
             />
             {phoneError !== '' && <Text style={styles.errorText}>{phoneError}</Text>}
             
-            <TextInput
+            {/* <TextInput
               style={styles.input}
               placeholder="Address"
               value={address}
               onChangeText={setAddress}
               onBlur={validateAddress}
             />
-            {nameError !== '' && <Text style={styles.errorText}>{nameError}</Text>}
+            {nameError !== '' && <Text style={styles.errorText}>{nameError}</Text>} */}
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -368,6 +373,33 @@ const formattedDate = `${year}-${month}-${day}`;
           </View>
         </View>
       </Modal>
+      
+      {/* Email In Modal */}
+
+      <Modal animationType="slide" transparent={true} visible={emailModalVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+          <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setEmailModalVisible(false)}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="close-circle-outline" size={35} color="#2B60DA" style={{padding:10, fontWeight:20,}} />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Our Mails</Text>
+            <Text style={styles.modalText}>jrex@gmail.com</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={handleSignIn}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.buttonText}>Email</Text>
+            </TouchableOpacity>
+           
+          </View>
+        </View>
+      </Modal>
+     
     </SafeAreaView>
   );
 };
