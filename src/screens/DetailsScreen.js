@@ -389,6 +389,217 @@
 // export default DetailsScreen;
 
 
+// import React, { useEffect, useState, useContext } from 'react';
+// import { SafeAreaView, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+// import { ScrollView } from 'react-native-gesture-handler';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
+// import COLORS from '../global/LandingColors';
+// import { SecondaryButton } from '../components/Button';
+// import products from './../global/constants/products';
+// import { CartContext } from '../CartContext';
+// import { useNavigation } from '@react-navigation/native';
+
+
+// const CustomToast = ({ text1, text2, onClose }) => {
+//   useEffect(() => {
+//     const timeout = setTimeout(onClose, 2000); // Automatically close the toast after 2 seconds
+//     return () => clearTimeout(timeout);
+//   }, []);
+
+//   return (
+//     <TouchableOpacity style={styles.toastContainer} activeOpacity={0.8} onPress={onClose}>
+//       <View style={styles.toastContent}>
+//         <Text style={styles.toastText1}>{text1}</Text>
+//         {text2 && <Text style={styles.toastText2}>{text2}</Text>}
+//       </View>
+//       <Icon name="close" size={20} color={COLORS.white} style={styles.closeIcon} onPress={onClose} />
+//     </TouchableOpacity>
+//   );
+// };
+
+// const DetailsScreen = ({ route }) => {
+//   const item = route.params;
+//   const [product, setProduct] = useState({});
+//   const [showToast, setShowToast] = useState(false);
+//   const { addItemToCart } = useContext(CartContext);
+//   const navigation = useNavigation();
+
+//   useEffect(() => {
+//     setProduct(products.find((product) => product.id === item.id));
+//   }, [item]);
+
+//   function onAddToCart() {
+//     addItemToCart(product.id);
+//     setShowToast(true); // Show the toast message
+//   }
+
+//   function navigateToCart() {
+//     navigation.navigate('Cart'); // Replace 'Cart' with the actual screen name for the cart screen
+//   }
+
+//   return (
+//     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+//       <View style={styles.header}>
+//         {/* <Icon name="arrow-back-ios" size={28} onPress={() => navigation.goBack()} /> */}
+//         {/* <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Details</Text> */}
+//       </View>
+//       {/* <HomeHeader navigation={navigation} /> */}
+//       <ScrollView showsVerticalScrollIndicator={false}>
+//         <View
+//           style={{
+//             justifyContent: 'center',
+//             alignItems: 'center',
+//             height: 280,
+//           }}
+//         >
+//           <Image source={item.image} style={{ height: 220, width: 220 }} />
+//         </View>
+//         <View style={styles.details}>
+//           <View
+//             style={{
+//               flexDirection: 'row',
+//               justifyContent: 'space-between',
+//               alignItems: 'center',
+//             }}
+//           >
+//             <Text
+//               style={{
+//                 fontSize: 25,
+//                 fontWeight: 'bold',
+//                 color: COLORS.white,
+//               }}
+//             >
+//               {item.name}
+//             </Text>
+//             <TouchableOpacity style={styles.iconContainer} onPress={navigateToCart}>
+//               <Icon name="shopping-cart" color={COLORS.primary} size={25} />
+//             </TouchableOpacity>
+//           </View>
+//           <Text style={styles.detailsText}>{item.description}</Text>
+//           <View style={{ marginTop: 40, marginBottom: 40 }}>
+//             <SecondaryButton title="Add To Cart" onPress={onAddToCart} />
+//           </View>
+//         </View>
+//       </ScrollView>
+//       {showToast && (
+//         <CustomToast
+//           text1="Success!"
+//           text2="Item Added To Cart successfully."
+//           onClose={() => setShowToast(false)}
+//         />
+//       )}
+//     </SafeAreaView>
+//   );
+// };
+// import React, { useEffect, useState, useContext } from 'react';
+// import { SafeAreaView, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+// import { ScrollView } from 'react-native-gesture-handler';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
+// import COLORS from '../global/LandingColors';
+// import { SecondaryButton } from '../components/Button';
+// import products from './../global/constants/products';
+// import { CartContext } from '../CartContext';
+// import { useNavigation } from '@react-navigation/native';
+
+// const CustomToast = ({ text1, text2, onClose }) => {
+//   useEffect(() => {
+//     const timeout = setTimeout(onClose, 2000); // Automatically close the toast after 2 seconds
+//     return () => clearTimeout(timeout);
+//   }, []);
+
+//   return (
+//     <TouchableOpacity style={styles.toastContainer} activeOpacity={0.8} onPress={onClose}>
+//       <View style={styles.toastContent}>
+//         <Text style={styles.toastText1}>{text1}</Text>
+//         {text2 && <Text style={styles.toastText2}>{text2}</Text>}
+//       </View>
+//       <Icon name="close" size={20} color={COLORS.white} style={styles.closeIcon} onPress={onClose} />
+//     </TouchableOpacity>
+//   );
+// };
+
+// const DetailsScreen = ({ route }) => {
+//   const item = route.params;
+//   const [product, setProduct] = useState({});
+//   const [showToast, setShowToast] = useState(false);
+//   const [cartItemCount, setCartItemCount] = useState(0); // Track the number of items added to cart
+//   const { addItemToCart } = useContext(CartContext);
+//   const navigation = useNavigation();
+
+//   useEffect(() => {
+//     setProduct(products.find((product) => product.id === item.id));
+//   }, [item]);
+
+//   function onAddToCart() {
+//     addItemToCart(product.id);
+//     setCartItemCount((prevCount) => prevCount + 1); // Increment the cart item count
+//     setShowToast(true); // Show the toast message
+//   }
+
+//   function navigateToCart() {
+//     navigation.navigate('Cart'); // Replace 'Cart' with the actual screen name for the cart screen
+//   }
+
+//   return (
+//     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+//       <View style={styles.header}>
+//         {/* <Icon name="arrow-back-ios" size={28} onPress={() => navigation.goBack()} /> */}
+//         {/* <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Details</Text> */}
+//       </View>
+//       {/* <HomeHeader navigation={navigation} /> */}
+//       <ScrollView showsVerticalScrollIndicator={false}>
+//         <View
+//           style={{
+//             justifyContent: 'center',
+//             alignItems: 'center',
+//             height: 280,
+//           }}
+//         >
+//           <Image source={item.image} style={{ height: 220, width: 220 }} />
+//         </View>
+//         <View style={styles.details}>
+//           <View
+//             style={{
+//               flexDirection: 'row',
+//               justifyContent: 'space-between',
+//               alignItems: 'center',
+//             }}
+//           >
+//             <Text
+//               style={{
+//                 fontSize: 25,
+//                 fontWeight: 'bold',
+//                 color: COLORS.white,
+//               }}
+//             >
+//               {item.name}
+//             </Text>
+//             <TouchableOpacity style={styles.iconContainer} onPress={navigateToCart}>
+//               <Icon name="shopping-cart" color={COLORS.primary} size={25} />
+//               {cartItemCount > 0 && ( // Display the cart item count if it's greater than 0
+//                 <View style={styles.cartItemCount}>
+//                   <Text style={styles.cartItemCountText}>{cartItemCount}</Text>
+//                 </View>
+//               )}
+//             </TouchableOpacity>
+//           </View>
+//           <Text style={styles.detailsText}>{item.description}</Text>
+//           <View style={{ marginTop: 40, marginBottom: 40 }}>
+//             <SecondaryButton title="Add To Cart" onPress={onAddToCart} />
+//           </View>
+//         </View>
+//       </ScrollView>
+//       {showToast && (
+//         <CustomToast
+//           text1="Success!"
+//           text2={`Item Added To Cart successfully. Total items in cart: ${cartItemCount}`}
+//           onClose={() => setShowToast(false)}
+//         />
+//       )}
+//     </SafeAreaView>
+//   );
+// };
+
 import React, { useEffect, useState, useContext } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -398,7 +609,6 @@ import { SecondaryButton } from '../components/Button';
 import products from './../global/constants/products';
 import { CartContext } from '../CartContext';
 import { useNavigation } from '@react-navigation/native';
-
 
 const CustomToast = ({ text1, text2, onClose }) => {
   useEffect(() => {
@@ -421,6 +631,7 @@ const DetailsScreen = ({ route }) => {
   const item = route.params;
   const [product, setProduct] = useState({});
   const [showToast, setShowToast] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0); // Track the number of items added to cart
   const { addItemToCart } = useContext(CartContext);
   const navigation = useNavigation();
 
@@ -430,6 +641,7 @@ const DetailsScreen = ({ route }) => {
 
   function onAddToCart() {
     addItemToCart(product.id);
+    setCartItemCount((prevCount) => prevCount + 1); // Increment the cart item count
     setShowToast(true); // Show the toast message
   }
 
@@ -473,6 +685,11 @@ const DetailsScreen = ({ route }) => {
             </Text>
             <TouchableOpacity style={styles.iconContainer} onPress={navigateToCart}>
               <Icon name="shopping-cart" color={COLORS.primary} size={25} />
+              {cartItemCount > 0 && ( // Display the cart item count if it's greater than 0
+                <View style={styles.cartItemCount}>
+                  <Text style={styles.cartItemCountText}>{cartItemCount}</Text>
+                </View>
+              )}
             </TouchableOpacity>
           </View>
           <Text style={styles.detailsText}>{item.description}</Text>
@@ -484,7 +701,9 @@ const DetailsScreen = ({ route }) => {
       {showToast && (
         <CustomToast
           text1="Success!"
-          text2="Item Added To Cart successfully."
+          text2={`${
+            cartItemCount === 1 ? '1 item' : `${cartItemCount} items`
+          } added to cart successfully.`}
           onClose={() => setShowToast(false)}
         />
       )}
@@ -541,7 +760,7 @@ const styles = StyleSheet.create({
   },
   toastText1: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '900',
     color: COLORS.white,
   },
   toastText2: {
@@ -550,10 +769,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.white,
   },
+  cartItemCount: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginLeft: 5,
+  },
+  cartItemCountText: {
+    color: COLORS.white,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   closeIcon: {
     marginLeft: 10,
     fontWeight: 'bold',
   },
+
+
+
+  
 });
 
 export default DetailsScreen;
